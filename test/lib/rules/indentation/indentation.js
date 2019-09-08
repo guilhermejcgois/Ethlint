@@ -13,6 +13,24 @@ const acceptDir = path.join(__dirname, "accept"),
     { EOL } = require("os");
 
 describe("[RULE] indentation: Acceptances", function() {
+    it("should accept a valid file with inline assembly code", function(done) {
+        let userConfig = {
+            "rules": {
+                "indentation": "error"
+            }
+        };
+
+        let file = "config-assembly.sol";
+        let code = fs.readFileSync(path.join(acceptDir, file), "utf8");
+
+        let errors = Solium.lint(code, userConfig);
+        errors.constructor.name.should.equal("Array");
+        errors.length.should.equal(0);
+
+        Solium.reset();
+        done();
+    });
+
     it("should accept a valid file under the default options", function(done) {
         let userConfig = {
             "rules": {
